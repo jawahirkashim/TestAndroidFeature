@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private lateinit var textView:TextView
@@ -17,9 +18,16 @@ class MainActivity : AppCompatActivity() {
 
 
     fun doExecute(view: View) {
+        thread(start = true) {
+            executeLongRunningTask()
+        }
+
+    }
+
+    private fun executeLongRunningTask() {
         Log.d(TAG, "doExecute: thread: "+Thread.currentThread().name)
 
-        for (i in 0..1000_000_000_00){
+        for (i in 0..1000_000_000_000L){
 
         }
     }
