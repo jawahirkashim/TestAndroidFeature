@@ -21,15 +21,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     suspend fun printFollowers(){
-        var follower = 0
-        val job = CoroutineScope(Dispatchers.IO).async {
-            getTwitterFollowers() // it launch parallel in separate thread and took 1sec.
+        CoroutineScope(Dispatchers.IO).launch {
+            val instrafollowers = async {  getInstraFollowers() }
+            val twitterFollowers = async { getTwitterFollowers() }
+            Log.d(TAG, "instra : ${instrafollowers.await()}, twitter :${twitterFollowers.await()}")
         }
-        Log.d(TAG, "printFollowers: ${job.await()}")  // follower: 0 , since this variable will get updated after 1 sec.
     }
     suspend fun getTwitterFollowers():Int{
         delay(1000)
         return 29
+    }
+    suspend fun getInstraFollowers():Int{
+        delay(1000)
+        return 44
     }
     fun doExecute(view: View) {
         Log.d(TAG, "doExecute: thread: "+Thread.currentThread().name)
