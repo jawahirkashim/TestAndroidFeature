@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var textView:TextView
@@ -13,9 +14,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         textView = findViewById(R.id.textView)
+        CoroutineScope(Dispatchers.IO).launch {
+            printFollowers()
+        }
+
     }
 
-
+    suspend fun printFollowers(){
+        var follower = 0
+        CoroutineScope(Dispatchers.IO).launch {
+            follower = getTwitterFollowers() // it launch parallel in separate thread and took 1sec.
+        }
+        Log.d(TAG, "printFollowers: $follower")  // follower: 0 , since this variable will get updated after 1 sec.
+    }
+    suspend fun getTwitterFollowers():Int{
+        delay(1000)
+        return 29
+    }
     fun doExecute(view: View) {
         Log.d(TAG, "doExecute: thread: "+Thread.currentThread().name)
 
