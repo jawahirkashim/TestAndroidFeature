@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import kotlinx.coroutines.*
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +19,18 @@ class MainActivity : AppCompatActivity() {
 
 
     fun doExecute(view: View) {
-        thread(start = true) {
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.d(TAG, "1- doExecute: ${Thread.currentThread().name}")
+            executeLongRunningTask()
+        }
+
+        MainScope().launch(Dispatchers.Main) {
+            Log.i(TAG, "2 - doExecute: ${Thread.currentThread().name}")
+            //executeLongRunningTask()
+        }
+
+        GlobalScope.launch(Dispatchers.Default) {
+            Log.v(TAG, "3 - doExecute: ${Thread.currentThread().name}")
             executeLongRunningTask()
         }
 
