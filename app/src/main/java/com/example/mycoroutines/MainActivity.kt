@@ -22,11 +22,10 @@ class MainActivity : AppCompatActivity() {
 
     suspend fun printFollowers(){
         var follower = 0
-        val job = CoroutineScope(Dispatchers.IO).launch {
-            follower = getTwitterFollowers() // it launch parallel in separate thread and took 1sec.
+        val job = CoroutineScope(Dispatchers.IO).async {
+            getTwitterFollowers() // it launch parallel in separate thread and took 1sec.
         }
-        job.join()
-        Log.d(TAG, "printFollowers: $follower")  // follower: 0 , since this variable will get updated after 1 sec.
+        Log.d(TAG, "printFollowers: ${job.await()}")  // follower: 0 , since this variable will get updated after 1 sec.
     }
     suspend fun getTwitterFollowers():Int{
         delay(1000)
