@@ -1,11 +1,9 @@
 package com.example.mycoroutines
 
 import android.util.Log
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import android.widget.TextView
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 
 private val TAG = "Producer_Consumer"
 fun producer() = flow<Int> {
@@ -16,9 +14,13 @@ fun producer() = flow<Int> {
     }
 }
 
-fun consumer() = CoroutineScope(Dispatchers.Default).launch {
+fun consumer(textView: TextView) = CoroutineScope(Dispatchers.Default).launch {
     val data = producer()
     data.collect{ intVal ->
         Log.d(TAG, "consumer: $intVal")
+        withContext(Dispatchers.Main){
+            textView.text = "consumer: $intVal"
+        }
+
     }
 }

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import kotlinx.coroutines.*
-import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private lateinit var textView:TextView
@@ -16,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         textView = findViewById(R.id.textView)
 
-        consumer()
+        consumer(textView)
     }
 
 
