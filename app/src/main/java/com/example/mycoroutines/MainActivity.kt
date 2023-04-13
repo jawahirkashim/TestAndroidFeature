@@ -15,7 +15,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         textView = findViewById(R.id.textView)
 
-        consumer(textView)
+        val job = consumer(textView)
+
+        // job got cancelled after 3.5 sec . it cancels the flow and the producers val did not get processed further
+        GlobalScope.launch{
+            delay(3500)
+            job.cancel()
+        }
     }
 
 
