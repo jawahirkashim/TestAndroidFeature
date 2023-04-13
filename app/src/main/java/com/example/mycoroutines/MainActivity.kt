@@ -10,11 +10,13 @@ import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private lateinit var textView:TextView
-    private val TAG = MainActivity::class.java.simpleName
+    private val TAG: String = MainActivity::class.java.simpleName
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         textView = findViewById(R.id.textView)
+
+        consumer()
     }
 
 
